@@ -42,26 +42,24 @@ class Loop {
                         translate = -obj.targetArr[-obj.target] + obj.targetArr[obj.slides.size()-1] + t.getTranslate(t.wrapper[0],'x');
                         t.transform.call(obj.wrapper[0],obj.translate3d(translate));
                     }
-                    console.log('touchstart',t.target);
                 }
                 t.transitionEnd(()=>{
                     console.log(new Date());
-                    // if(t.params.loop){
-                    //     t.transition(0);
-                    //     //判断是否需要重置为第一个或者最后一个this.getTranslate(this.wrapper[0],'x');
-                    //     if(-t.target == 0){
-                    //         t.target = -obj.slides.size()+2;
-                    //         translate = -obj.targetArr[-obj.target] + t.getTranslate(t.wrapper[0],'x');
-                    //         // t.transform.call(obj.wrapper[0],obj.translate3d(translate));
-                    //         t.transform.call(obj.wrapper[0],obj.translate3d(translate));
-                    //     }
-                    //     else if(t.target == (-obj.slides.size()+1)){
-                    //         t.target = -1;
-                    //         translate = -obj.targetArr[-obj.target] + obj.targetArr[obj.slides.size()-1] + t.getTranslate(t.wrapper[0],'x');
-                    //         t.transform.call(obj.wrapper[0],obj.translate3d(translate));
-                    //     }
-                    // }
-
+                    if(t.params.loop){
+                        t.transition(0);
+                        //判断是否需要重置为第一个或者最后一个this.getTranslate(this.wrapper[0],'x');
+                        if(-t.target == 0){
+                            t.target = -obj.slides.size()+2;
+                            translate = -obj.targetArr[-obj.target] + t.getTranslate(t.wrapper[0],'x');
+                            // t.transform.call(obj.wrapper[0],obj.translate3d(translate));
+                            t.transform.call(obj.wrapper[0],obj.translate3d(translate));
+                        }
+                        else if(t.target == (-obj.slides.size()+1)){
+                            t.target = -1;
+                            translate = -obj.targetArr[-obj.target] + obj.targetArr[obj.slides.size()-1] + t.getTranslate(t.wrapper[0],'x');
+                            t.transform.call(obj.wrapper[0],obj.translate3d(translate));
+                        }
+                    }
                     $('.swiper-pagination i').eq(-t.target - 1).
                     addClass('active').siblings().removeClass('active');
                 })

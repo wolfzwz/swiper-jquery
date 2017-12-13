@@ -155,6 +155,11 @@ Swiper.prototype = {
 					}
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
+				}else if (this.direction === void 0){
+                    if(this.getTranslate(this.wrapper[0],'x') < 0 && this.getTranslate(this.wrapper[0],'x') > -this.translate.max){
+                        translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
+                        this.transform.call(this.wrapper[0],translate3d);
+                    }
 				}
 			}else{
 				this.transition(this.params.time);
@@ -170,7 +175,12 @@ Swiper.prototype = {
 					);
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
-				}
+				}else if (this.direction === void 0){
+                    if(this.getTranslate(this.wrapper[0],'x') < 0 && this.getTranslate(this.wrapper[0],'x') > -this.translate.max){
+                        translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
+                        this.transform.call(this.wrapper[0],translate3d);
+                    }
+                }
 			}
 		}.bind(this));
 	},
