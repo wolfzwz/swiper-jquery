@@ -100,7 +100,7 @@ Swiper.prototype = {
 			var translate = 0,translate3d = 0;
 			if(defaults.resistance){
 				translate = this.translate.curr + this.dis.x;
-				this.dis.x += (translate > 0 || translate < -this.translate.max ? -2/3 * (t.pageX - this.spos.x) : 0); 
+				this.dis.x += (translate > 0 || translate < -this.targetArr[this.targetArr.length - 2] ? -2/3 * (t.pageX - this.spos.x) : 0);
 				//translate = this.translate.curr + this.dis.x
 				translate = this.translate.curr + this.dis.x
 				translate3d = 'translate3d('+ translate +'px,0,0)';
@@ -147,6 +147,7 @@ Swiper.prototype = {
 					if(this.getTranslate(this.wrapper[0],'x') < 0 && this.getTranslate(this.wrapper[0],'x') > -this.translate.max){
 						this.target = -this.getTarget(-this.getTranslate(this.wrapper[0],'x'));
 					}
+                    console.log(this.target)
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
 				}else if(this.direction == 'right'){
@@ -164,9 +165,13 @@ Swiper.prototype = {
 			}else{
 				this.transition(this.params.time);
 				if(this.direction === 'left' ){
+                    this.target = -this.getTarget(-this.getTranslate(this.wrapper[0],'x'));
+
+                    console.log(this.targetArr[-this.target])
 					this.target = Math.round(
-						this.getTranslate(this.wrapper[0],'x') / this.slides.width()
-					);
+						(-this.getTranslate(this.wrapper[0],'x') - this.targetArr[-this.target]) /
+						(this.targetArr[-this.target + 1] - this.targetArr[-this.target])
+                    ) == 1 ? this.target + 1 : this.target;
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
 				}else if(this.direction == 'right'){
