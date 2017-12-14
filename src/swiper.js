@@ -132,7 +132,6 @@ Swiper.prototype = {
 			}else{
                 this.direction = undefined;
 			}
-			console.log('direction',this.direction);
 			this.dis.x = 0;
 			this.dis.y = 0;
 			this.translate.curr = this.getTranslate(this.wrapper[0],'x');
@@ -147,7 +146,6 @@ Swiper.prototype = {
 					if(this.getTranslate(this.wrapper[0],'x') < 0 && this.getTranslate(this.wrapper[0],'x') > -this.translate.max){
 						this.target = -this.getTarget(-this.getTranslate(this.wrapper[0],'x'));
 					}
-                    console.log(this.target)
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
 				}else if(this.direction == 'right'){
@@ -166,12 +164,16 @@ Swiper.prototype = {
 				this.transition(this.params.time);
 				if(this.direction === 'left' ){
                     this.target = -this.getTarget(-this.getTranslate(this.wrapper[0],'x'));
-
-                    console.log(this.targetArr[-this.target])
-					this.target = Math.round(
-						(-this.getTranslate(this.wrapper[0],'x') - this.targetArr[-this.target]) /
-						(this.targetArr[-this.target + 1] - this.targetArr[-this.target])
-                    ) == 1 ? this.target + 1 : this.target;
+                    if(-this.target != this.targetArr.length){
+                        this.target = Math.round(
+                            (-this.getTranslate(this.wrapper[0],'x') - this.targetArr[-this.target]) /
+                            (this.targetArr[-this.target] - this.targetArr[-this.target - 1])
+                        ) == -1 ? this.target + 1 : this.target;
+					}
+					console.log(Math.round(
+                        (-this.getTranslate(this.wrapper[0],'x') - this.targetArr[-this.target]) /
+                        (this.targetArr[-this.target ] - this.targetArr[-this.target - 1])
+                    ),'round1')
 					translate3d = 'translate3d(' + -this.targetArr[-this.target] + 'px,0,0)';
 					this.transform.call(this.wrapper[0],translate3d);
 				}else if(this.direction == 'right'){
@@ -187,6 +189,11 @@ Swiper.prototype = {
                     }
                 }
 			}
+			if(!this.params.loop){
+				console.log(-this.target,'loop');
+				$('.swiper-pagination i').eq(-this.target).addClass('active').siblings().removeClass('active');
+			}
+
 		}.bind(this));
 	},
 	transform: function(translate,callback){

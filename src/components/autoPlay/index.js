@@ -2,16 +2,15 @@
 class AutoPlay {
     //初始化
     init(obj){
-        this.start(obj);
+        if(obj.params.autoPlay !== void 0){
+            this.start(obj);
+        }
         return obj;
     };
     //播放
     start(obj){
         var t = obj;
         var that = this;
-        if(t.params.autoPlay === void 0){
-            return false;
-        }
         function auto(){
             if(t.params.loop && that.play !== void 0){
                 t.target --;
